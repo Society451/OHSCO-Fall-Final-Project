@@ -5,99 +5,91 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aristotle's Solar System</title>
     <link href='https://fonts.googleapis.com/css?family=Arial' rel='stylesheet'>
-    <style>
-        body {
-            margin: 0;
-            display: flex;
-            height: 100vh;
-            position: relative;
-        }
-        #info-sidebar {
-            width: 300px;
-            background-color: #03396c;
-            padding: 20px;
-            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
-            font-family: 'Arial';
-            font-size: 16px;
-            overflow-y: auto;
-            color: #FFFFFF;
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            z-index: 10;
-        }
-        #render-area {
-            flex-grow: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: #000;
-        }
-        canvas {
-            display: block;
-        }
-        .settings-section {
-            margin-top: 20px;
-        }
-        .settings-section h3 {
-            margin-bottom: 10px;
-        }
-        .settings-section div {
-            margin-bottom: 10px;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div id="info-sidebar">
+        <button id="minimize-button">Minimize</button>
         <h3>Adjust Planet Speed</h3>
         <input type="range" id="speed-slider" min="0.001" max="1" step="0.001" value="0.005">
         <label for="speed-slider">Speed Factor: <span id="speed-value">0.005</span></label>
         
         <h3>Toggle Planet Visibility</h3>
-        <div>
-            <input type="checkbox" id="visibility-moon" checked>
-            <label for="visibility-moon">Moon</label>
+        <div class="content">
+            <label class="checkBox">
+                <input id="visibility-moon" type="checkbox" checked>
+                <div class="transition"></div>
+            </label>
+            <span>Moon</span>
         </div>
-        <div>
-            <input type="checkbox" id="visibility-mercury" checked>
-            <label for="visibility-mercury">Mercury</label>
+        <div class="content">
+            <label class="checkBox">
+                <input id="visibility-mercury" type="checkbox" checked>
+                <div class="transition"></div>
+            </label>
+            <span>Mercury</span>
         </div>
-        <div>
-            <input type="checkbox" id="visibility-venus" checked>
-            <label for="visibility-venus">Venus</label>
+        <div class="content">
+            <label class="checkBox">
+                <input id="visibility-venus" type="checkbox" checked>
+                <div class="transition"></div>
+            </label>
+            <span>Venus</span>
         </div>
-        <div>
-            <input type="checkbox" id="visibility-sun" checked>
-            <label for="visibility-sun">Sun</label>
+        <div class="content">
+            <label class="checkBox">
+                <input id="visibility-sun" type="checkbox" checked>
+                <div class="transition"></div>
+            </label>
+            <span>Sun</span>
         </div>
-        <div>
-            <input type="checkbox" id="visibility-mars" checked>
-            <label for="visibility-mars">Mars</label>
+        <div class="content">
+            <label class="checkBox">
+                <input id="visibility-mars" type="checkbox" checked>
+                <div class="transition"></div>
+            </label>
+            <span>Mars</span>
         </div>
-        <div>
-            <input type="checkbox" id="visibility-jupiter" checked>
-            <label for="visibility-jupiter">Jupiter</label>
+        <div class="content">
+            <label class="checkBox">
+                <input id="visibility-jupiter" type="checkbox" checked>
+                <div class="transition"></div>
+            </label>
+            <span>Jupiter</span>
         </div>
-        <div>
-            <input type="checkbox" id="visibility-saturn" checked>
-            <label for="visibility-saturn">Saturn</label>
+        <div class="content">
+            <label class="checkBox">
+                <input id="visibility-saturn" type="checkbox" checked>
+                <div class="transition"></div>
+            </label>
+            <span>Saturn</span>
         </div>
 
         <div class="settings-section">
             <h3>Settings</h3>
-            <div>
-                <input type="checkbox" id="visibility-planet-meshes">
-                <label for="visibility-planet-meshes">Show Planet Meshes</label>
+            <div class="content">
+                <label class="checkBox">
+                    <input id="visibility-planet-meshes" type="checkbox">
+                    <div class="transition"></div>
+                </label>
+                <span>Show Planet Meshes</span>
             </div>
-            <div>
-                <input type="checkbox" id="visibility-particles" checked>
-                <label for="visibility-particles">Show Stars and Particles</label>
+            <div class="content">
+                <label class="checkBox">
+                    <input id="visibility-particles" type="checkbox" checked>
+                    <div class="transition"></div>
+                </label>
+                <span>Show Stars and Particles</span>
             </div>
-            <div>
-                <input type="checkbox" id="toggle-sun-light" checked>
-                <label for="toggle-sun-light">Sun as realistic light</label>
+            <div class="content">
+                <label class="checkBox">
+                    <input id="toggle-sun-light" type="checkbox" checked>
+                    <div class="transition"></div>
+                </label>
+                <span>Sun as realistic light</span>
             </div>
         </div>
+        <div id="resize-handle"></div>
     </div>
 
     <div id="render-area"></div>

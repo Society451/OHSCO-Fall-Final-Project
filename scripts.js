@@ -269,3 +269,93 @@ function resizeRenderer() {
     camera.aspect = width / height;
     camera.updateProjectionMatrix();
 }
+
+// Sidebar functionality
+const sidebar = document.getElementById('info-sidebar');
+const minimizeButton = document.getElementById('minimize-button');
+const resizeHandle = document.getElementById('resize-handle');
+
+let isResizing = false;
+let isDragging = false;
+let isMinimized = false;
+let startX, startY, startWidth, startHeight, startLeft, startTop;
+let prevWidth = sidebar.offsetWidth;
+let prevHeight = sidebar.offsetHeight;
+
+function toggleSidebarMinimize() {
+    isMinimized = !isMinimized;
+    if (isMinimized) {
+        prevWidth = sidebar.offsetWidth;
+        prevHeight = sidebar.offsetHeight;
+        sidebar.classList.add('minimized');
+        minimizeButton.textContent = 'Maximize';
+    } else {
+        sidebar.classList.remove('minimized');
+        sidebar.style.width = prevWidth + 'px';
+        sidebar.style.height = prevHeight + 'px';
+        minimizeButton.textContent = 'Minimize';
+    }
+}
+
+// Use the unified function for both button click and double-click
+minimizeButton.addEventListener('click', toggleSidebarMinimize);
+sidebar.addEventListener('dblclick', toggleSidebarMinimize);
+
+resizeHandle.addEventListener('mousedown', (e) => {
+    isResizing = true;
+    startX = e.clientX;
+    startWidth = parseInt(document.defaultView.getComputedStyle(sidebar).width, 10);
+    document.documentElement.addEventListener('mousemove', doResize, false);
+    document.documentElement.addEventListener('mouseup', stopResize, false);
+});
+
+sidebar.addEventListener('mousedown', (e) => {
+    if (e.target === sidebar) {
+        isDragging = true;
+        startX = e.clientX;
+        startY = e.clientY;
+        startLeft = parseInt(document.defaultView.getComputedStyle(sidebar).left, 10);
+        startTop = parseInt(document.defaultView.getComputedStyle(sidebar).top, 10);
+        document.documentElement.addEventListener('mousemove', doDrag, false);
+        document.documentElement.addEventListener('mouseup', stopDrag, false);
+    }
+});
+
+function doResize(e) {
+    if (isResizing && !isMinimized) {
+        sidebar.style.width = (startWidth + e.clientX - startX) + 'px';
+        resizeRenderer();
+    }
+}
+
+function stopResize() {
+    isResizing = false;
+    document.documentElement.removeEventListener('mousemove', doResize, false);
+    document.documentElement.removeEventListener('mouseup', stopResize, false);
+}
+
+function doDrag(e) {
+    if (isDragging) {
+        let newLeft = startLeft + e.clientX - startX;
+        let newTop = startTop + e.clientY - startY;
+
+        // Prevent the sidebar from going off-screen
+        if (newLeft < 0) newLeft = 0;
+        if (newTop < 0) newTop = 0;
+        if (newLeft + sidebar.offsetWidth > window.innerWidth) {
+            newLeft = window.innerWidth - sidebar.offsetWidth;
+        }
+        if (newTop + sidebar.offsetHeight > window.innerHeight) {
+            newTop = window.innerHeight - sidebar.offsetHeight;
+        }
+
+        sidebar.style.left = newLeft + 'px';
+        sidebar.style.top = newTop + 'px';
+    }
+}
+
+function stopDrag() {
+    isDragging = false;
+    document.documentElement.removeEventListener('mousemove', doDrag, false);
+    document.documentElement.removeEventListener('mouseup', stopDrag, false);
+}
